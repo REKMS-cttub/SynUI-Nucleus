@@ -1,3 +1,4 @@
+
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json;
@@ -30,11 +31,7 @@ namespace SynapseUI
         private const int HTBOTTOM = 15;
         private const int HTBOTTOMLEFT = 16;
         private const int HTBOTTOMRIGHT = 17;
-
-
-
-            // 移除标题栏
-
+        
 
         protected override void WndProc(ref Message m)
         {
@@ -183,7 +180,7 @@ end)
             InitializeWebSocketServer();
             InitializeAsync();
             InitializeWindow();
-            InitializeSeliware();
+            InitializeMain();
             LoadSettings();
             SendCurrentSettings();
             mf();
@@ -275,7 +272,7 @@ end)
             }
         }
 
-        private void InitializeSeliware()
+        private void InitializeMain()
         {
             try
             {
@@ -293,6 +290,7 @@ end)
                 MessageBox.Show($"Failed to initialize: {ex.Message}", "Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
 
         private void CreateSampleScripts()
@@ -425,6 +423,13 @@ end)
                         case "update":
                             Updater();
                             break;
+                        case "ivar":
+                            bool isi = Convert.ToBoolean(message["val"]);
+                            if (isi)
+                            {
+                                SendInjectionResult(false,"Process Exited");
+                            }
+                            break;
                     }
                 });
             }
@@ -439,7 +444,7 @@ end)
             string upbat = @"@echo off
 setlocal enabledelayedexpansion
 
-set ""github_url=https://github.com/REKMS-cttub/SynUI/releases/latest/download/Release.zip""
+set ""github_url=https://github.com/REKMS-cttub/SynUI-Nucleus/releases/latest/download/Release.zip""
 set ""temp_dir=%TEMP%\SynUI_Download""
 set ""zip_file=Release.zip""
 set ""max_retries=3""
@@ -598,6 +603,35 @@ start """" synapse_x_v3.exe
             }
         }
 
+        private async Task DetectProcess()
+        {
+            Debug.WriteLine("Detecting Process");
+            string[] processNames = { "RobloxPlayerBeta", "Roblox", "RobloxGameClient" };
+    
+            while (true) // 无限循环，直到找到进程
+            {
+                bool processFound = false;
+                
+                foreach (var name in processNames)
+                {
+                    Process[] processes = Process.GetProcessesByName(name);
+                    if (processes.Length > 0)
+                    {
+                        Debug.WriteLine("Process Found");
+                        processFound = true;
+                        break;
+                    }
+                }
+
+                if (!processFound)
+                {
+                    SendInjectionResult(false, "Process Not Found");
+                    return;
+                }
+                await Task.Delay(100);
+            }
+        }
+
         private void ExecuteCode(string code, string tabId)
         {
             try
@@ -624,7 +658,7 @@ start """" synapse_x_v3.exe
                         reason = "not injected",
                         tabId = tabId
                     });
-                    SendInjectionResult(false, "No Roblox process found");
+                    SendInjectionResult(false, "");
                     return;
                 }
                 
@@ -767,6 +801,7 @@ start """" synapse_x_v3.exe
                     nucleus.Inject();
                     nucleus.OnInjected += delegate
                     {
+                        DetectProcess();
                         new LogHandler(this).SetupLogService();
                         SendInjectionResult(true, "Injected successfully");
                     };

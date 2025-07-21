@@ -8,13 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e72be2ac-d893-4922-8637-940c8915663c" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx/Form1.Designer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx/Form1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx/Sx.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sx/Sx.csproj.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sx.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Sx.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sx/Form1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Form1.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sx/Sx.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Sx.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,29 +24,29 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="304y5IotM09QGg5ssYqEgpuO5kf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET 项目.Sx.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET 项目.Sx.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Sx" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -83,6 +80,8 @@
       <option name="presentableId" value="Default" />
       <updated>1752900954868</updated>
       <workItem from="1752900956987" duration="7266000" />
+      <workItem from="1753059904074" duration="623000" />
+      <workItem from="1753066579622" duration="585000" />
     </task>
     <servers />
   </component>
