@@ -7,12 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e72be2ac-d893-4922-8637-940c8915663c" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sx.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Sx.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sx/Form1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Form1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sx/Sx.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Sx.csproj" afterDir="false" />
-    </list>
+    <list default="true" id="e72be2ac-d893-4922-8637-940c8915663c" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,6 +23,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="304y5IotM09QGg5ssYqEgpuO5kf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -81,7 +79,7 @@
       <updated>1752900954868</updated>
       <workItem from="1752900956987" duration="7266000" />
       <workItem from="1753059904074" duration="623000" />
-      <workItem from="1753066579622" duration="585000" />
+      <workItem from="1753066496700" duration="7207000" />
     </task>
     <servers />
   </component>
