@@ -6,7 +6,6 @@
     <title>Synapse UI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 优化后的CSS代码 */
         :root {
             --bg-color-darkest: #1e1e1e;
             --bg-color-dark: #252526;
@@ -36,7 +35,7 @@
             color: var(--text-color-primary);
             background-color: var(--bg-color-darkest);
             font-size: 14px;
-            -webkit-user-select: none; /* 添加禁止文本选择 */
+            -webkit-user-select: none;
             user-select: none;
         }
 
@@ -306,6 +305,7 @@
             min-width: 140px;
             height: 36px;
             transition: all 0.2s;
+            position: relative;
         }
 
         .tab-item.active {
@@ -483,7 +483,6 @@
             padding: 0 20px;
             border-top: 1px solid var(--border-color);
             flex-shrink: 0;
-            /* 确保状态栏始终可见 */
             position: relative;
             z-index: 100;
         }
@@ -504,9 +503,8 @@
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-size: 13px;
-            font-weight: 500;
         }
         .status-bar button:hover {
             background-color: var(--bg-color-light);
@@ -532,7 +530,7 @@
             color: var(--accent-color-green);
         }
         .status-bar .inject-icon.active {
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.6s infinite;
         }
 
         @keyframes pulse {
@@ -657,6 +655,7 @@
         .file-actions {
             display: flex;
             gap: 10px;
+            position: relative;
         }
 
         .file-actions button {
@@ -933,7 +932,6 @@
             color: var(--accent-color-blue);
         }
 
-        /* 控制台标签页样式 */
         .console-container {
             height: 100%;
             background-color: var(--bg-color-darkest);
@@ -983,7 +981,6 @@
             color: #ff6666;
         }
 
-        /* 控制台滚动条样式 */
         .console-content::-webkit-scrollbar {
             width: 8px;
         }
@@ -1001,7 +998,6 @@
             background: #555;
         }
 
-        /* 毛玻璃滚动条 */
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -1022,7 +1018,6 @@
             background: rgba(140, 140, 140, 0.7);
         }
 
-        /* 开屏动画更新 */
         .update-icon {
             font-size: 36px;
             margin-bottom: 20px;
@@ -1072,7 +1067,6 @@
             animation: slideIn 0.5s ease-out;
         }
 
-        /* 错误处理按钮样式 */
         .error-actions {
             display: flex;
             gap: 15px;
@@ -1117,7 +1111,6 @@
             user-select: text !important;
         }
 
-        /* 标签页重命名输入框样式 */
         .tab-title-input {
             background: transparent;
             border: 1px solid var(--accent-color-blue);
@@ -1128,13 +1121,281 @@
             outline: none;
             border-radius: 3px;
         }
+        .cloud-page {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 88px);
+            background-color: var(--bg-color-darkest);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cloud-page.active {
+            display: flex;
+        }
+
+        .cloud-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cloud-header h2 {
+            font-size: 24px;
+            margin-left: 15px;
+        }
+
+        .cloud-header i {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .cloud-header i:hover {
+            background-color: var(--bg-color-medium);
+        }
+
+        .cloud-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color-dark);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+
+        .tab-context-menu {
+            position: fixed;
+            background-color: var(--bg-color-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            min-width: 180px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .tab-context-menu-item {
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-context-menu-item:hover {
+            background-color: var(--bg-color-medium);
+        }
+
+        .create-menu {
+            position: absolute;
+            background-color: var(--bg-color-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            min-width: 180px;
+            overflow: hidden;
+            display: none;
+            top: 100%;
+            right: 0;
+            margin-top: 5px;
+        }
+
+        .create-menu-item {
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .create-menu-item:hover {
+            background-color: var(--bg-color-medium);
+        }
+
+        .cloud-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .cloud-search {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .cloud-search input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            background-color: var(--bg-color-medium);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-color-primary);
+            outline: none;
+        }
+
+        .cloud-search button {
+            padding: 8px 15px;
+            background-color: var(--accent-color-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination button {
+            padding: 6px 12px;
+            background-color: var(--bg-color-medium);
+            color: var(--text-color-primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .script-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .script-card {
+            background-color: var(--bg-color-medium);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .script-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .script-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color-secondary);
+            font-size: 14px;
+        }
+
+        .script-content {
+            padding: 15px;
+        }
+
+        .script-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color-primary);
+        }
+
+        .script-description {
+            font-size: 14px;
+            color: var(--text-color-secondary);
+            margin-bottom: 15px;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .script-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .creator-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .creator-name {
+            font-size: 14px;
+            color: var(--text-color-secondary);
+        }
+
+        .script-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .script-actions button {
+            flex: 1;
+            padding: 8px;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .script-actions button:hover {
+            background-color: var(--accent-color-blue);
+        }
+
+        .script-textarea {
+            width: 100%;
+            height: 200px;
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            resize: none;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .create-menu-item i {
+            width: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div id="splash-screen">
     <div class="splash-logo">
         <div class="splash-title">SYNAPSE X</div>
-        <div class="splash-version">UI 1.5 | Nucleus UI</div>
+        <div class="splash-version">UI 1.6 | Nucleus UI</div>
     </div>
 
     <div class="update-container">
@@ -1157,7 +1418,6 @@
                 <button class="update-btn cancel" id="update-cancel-btn">Cancel</button>
             </div>
 
-            <!-- 错误处理按钮 -->
             <div class="error-actions" id="error-actions" style="display: none;">
                 <button class="error-btn retry" id="retry-btn">Retry</button>
                 <button class="error-btn continue" id="continue-btn">Continue</button>
@@ -1172,7 +1432,7 @@
             <div class="logo">
                 <span class="logo-text">SYNAPSE</span>
                 <div class="logo-info">
-                    <span>UI 1.5</span>
+                    <span>UI 1.6</span>
                     <span>Nucleus UI</span>
                 </div>
             </div>
@@ -1182,6 +1442,7 @@
             <div class="center-icons">
                 <i class="fa-solid fa-code icon" id="editor-btn" title="Editor"></i>
                 <i class="fa-solid fa-folder icon" id="toggle-file-explorer" title="File Explorer"></i>
+                <i class="fa-solid fa-cloud icon" id="cloud-btn" title="Cloud Scripts (IN-FIXING)"></i>
                 <i class="fa-solid fa-gear icon" id="settings-btn" title="Settings"></i>
             </div>
         </div>
@@ -1222,6 +1483,21 @@
                     <i class="fa-solid fa-folder-open"></i>
                     <span>File Explorer</span>
                 </div>
+                <div class="file-actions">
+                    <div class="create-menu" id="create-menu">
+                        <div class="create-menu-item" id="create-folder">
+                            <i class="fa-solid fa-folder-plus"></i>
+                            <span>Create Folder</span>
+                        </div>
+                        <div class="create-menu-item" id="create-file">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                            <span>Create File</span>
+                        </div>
+                    </div>
+                    <button id="create-btn">
+                        <i class="fa-solid fa-plus"></i> Create
+                    </button>
+                </div>
             </div>
 
             <div class="breadcrumb" id="breadcrumb">
@@ -1250,7 +1526,6 @@
 
             <div class="sidebar-list">
                 <ul id="file-list">
-                    <!-- 文件列表将在这里动态生成 -->
                 </ul>
             </div>
         </aside>
@@ -1259,6 +1534,28 @@
     <button class="back-to-editor" id="back-to-editor">
         <i class="fa-solid fa-arrow-left"></i> Back to Editor
     </button>
+
+    <div id="cloud-page" class="cloud-page">
+        <div class="cloud-header">
+            <i class="fa-solid fa-arrow-left" id="back-from-cloud"></i>
+            <h2>Cloud Scripts</h2>
+        </div>
+        <div class="cloud-content">
+            <div class="cloud-controls">
+                <div class="cloud-search">
+                    <input type="text" id="cloud-search-input" placeholder="Search scripts...">
+                    <button id="cloud-search-btn">Search</button>
+                </div>
+                <div class="pagination">
+                    <button id="cloud-prev-page" disabled>Prev</button>
+                    <span id="cloud-current-page">1</span>
+                    <button id="cloud-next-page">Next</button>
+                </div>
+            </div>
+
+            <div id="scripts-container" class="script-grid"></div>
+        </div>
+    </div>
 
     <div id="settings-page" class="settings-page">
         <div class="settings-header">
@@ -1304,7 +1601,6 @@
                 <span id="inject-status-text">Not Injected</span>
             </div>
             <i class="fa-solid fa-syringe icon inject-icon" id="inject-btn" title="Inject"></i>
-            <!-- 已删除其他按钮 -->
         </div>
     </footer>
 </div>
@@ -1321,6 +1617,13 @@
     <div class="context-menu-item" id="delete-file">
         <i class="fa-solid fa-trash"></i>
         <span>Delete File</span>
+    </div>
+</div>
+
+<div class="tab-context-menu" id="tab-context-menu">
+    <div class="tab-context-menu-item" id="rename-tab">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Rename Tab</span>
     </div>
 </div>
 
@@ -1345,29 +1648,24 @@
         const retryBtn = document.getElementById('retry-btn');
         const continueBtn = document.getElementById('continue-btn');
 
-        // 显示更新状态
         setTimeout(() => {
             updateStatus.classList.add('show');
             checkForUpdates();
         }, 500);
 
-        // 检查更新
-        let progressInterval; // 用于保存进度定时器
+        let progressInterval;
 
         async function checkForUpdates() {
             try {
-                // 重置
                 updateProgress.style.width = '0%';
                 progressText.textContent = '0%';
                 updateActions.style.display = 'none';
                 errorActions.style.display = 'none';
 
-                // 清除之前的定时器
                 if (progressInterval) {
                     clearInterval(progressInterval);
                 }
 
-                // 模拟进度
                 let progress = 0;
                 progressInterval = setInterval(() => {
                     progress += Math.floor(Math.random() * 5) + 1;
@@ -1375,7 +1673,6 @@
                         clearInterval(progressInterval);
                         updateProgress.style.width = '40%';
                         progressText.textContent = '40%';
-                        // 实际检查更新
                         verifyUpdate();
                     } else {
                         updateProgress.style.width = progress + '%';
@@ -1388,13 +1685,11 @@
             }
         }
 
-        // 验证更新
         async function verifyUpdate() {
-            const currentVersion = "1.5";
+            const currentVersion = "1.6";
             try {
                 updateText.textContent = "Verifying version...";
-                // 从GitHub获取最新版本
-                const response = await fetch('https://raw.githubusercontent.com/REKMS-cttub/SynUI-Nucleus/refs/heads/main/VERSION');
+                const response = await fetch('https://raw.githubusercontent.com/REKMS-cttub/SynUI-Nucleus/refs/heads/master/VERSION');
                 if (!response.ok) {
                     throw new Error('Failed to fetch version');
                 }
@@ -1402,12 +1697,10 @@
                 const latestVersion = await response.text();
 
                 if (latestVersion.trim() === currentVersion) {
-                    // 没有更新
                     updateText.textContent = "No Update Available";
                     updateProgress.style.width = '100%';
                     progressText.textContent = '100%';
 
-                    // 继续启动
                     setTimeout(() => {
                         splashScreen.classList.add('minimized');
                         setTimeout(() => {
@@ -1415,7 +1708,6 @@
                         }, 800);
                     }, 1000);
                 } else {
-                    // 有可用更新
                     postMessage({ "type":"update"})
                 }
             } catch (error) {
@@ -1424,7 +1716,6 @@
             }
         }
 
-        // 处理更新错误
         function handleUpdateError(errorMessage) {
             updateText.textContent = errorMessage;
             updateProgress.style.width = '100%';
@@ -1432,12 +1723,10 @@
             updateActions.style.display = "none";
             errorActions.style.display = "flex";
 
-            // 添加重试事件
             retryBtn.addEventListener('click', () => {
                 checkForUpdates();
             });
 
-            // 添加继续事件
             continueBtn.addEventListener('click', () => {
                 splashScreen.classList.add('minimized');
                 setTimeout(() => {
@@ -1446,14 +1735,12 @@
             });
         }
 
-        // 安装更新按钮事件
         updateInstallBtn.addEventListener('click', () => {
             updateText.textContent = "Downloading Update...";
             updateProgress.style.width = "60%";
             progressText.textContent = "60%";
             updateActions.style.display = "none";
 
-            // 模拟下载过程
             let downloadProgress = 60;
             const downloadInterval = setInterval(() => {
                 downloadProgress += Math.floor(Math.random() * 3) + 1;
@@ -1463,7 +1750,6 @@
                     updateProgress.style.width = downloadProgress + '%';
                     progressText.textContent = downloadProgress + '%';
 
-                    // 创建更新脚本
                     createUpdateScript();
 
                     clearInterval(downloadInterval);
@@ -1474,16 +1760,13 @@
             }, 50);
         });
 
-        // 创建更新脚本
         function createUpdateScript() {
             updateText.textContent = "Creating Update Script...";
             updateProgress.style.width = "98%";
             progressText.textContent = "98%";
 
-            // 创建bat文件内容
             const batContent = `"`;
 
-            // 创建bat文件
             const batBlob = new Blob([batContent], { type: 'application/bat' });
             const batUrl = URL.createObjectURL(batBlob);
             const downloadLink = document.createElement('a');
@@ -1493,13 +1776,11 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
-            // 完成更新准备
             setTimeout(() => {
                 updateText.textContent = "Update Ready!";
                 updateProgress.style.width = "100%";
                 progressText.textContent = "100%";
 
-                // 显示重启提示
                 setTimeout(() => {
                     updateText.textContent = "Please run update.bat to complete the update";
                     updateActions.innerHTML = `
@@ -1509,12 +1790,8 @@
                     updateActions.style.display = "flex";
 
                     document.getElementById('run-update-btn').addEventListener('click', () => {
-                        // 这里需要启动bat文件
                         updateText.textContent = "Running update...";
                         updateActions.style.display = "none";
-
-                        // 在实际应用中，这里需要启动bat文件
-                        // 由于浏览器安全限制，无法直接执行
                         showNotification("Please run the update.bat file manually", "info");
                     });
 
@@ -1529,7 +1806,6 @@
             }, 500);
         }
 
-        // 取消更新按钮事件
         updateCancelBtn.addEventListener('click', () => {
             splashScreen.classList.add('minimized');
             setTimeout(() => {
@@ -1537,7 +1813,6 @@
             }, 800);
         });
 
-        // 以下是原始功能代码（保持不变）
         let editors = {};
         let currentTabId = "tab1";
         let nextTabId = 2;
@@ -1549,6 +1824,11 @@
         let consoleLogs = [];
         let consoleTabId = null;
 
+        // Cloud scripts state
+        let cloudCurrentPage = 1;
+        let cloudTotalPages = 1;
+        let cloudSearchQuery = "";
+
         function initWebSocket() {
             const WS_PORT = 8765;
             socket = new WebSocket(`ws://localhost:${WS_PORT}/ui`);
@@ -1556,7 +1836,6 @@
             socket.addEventListener('open', (event) => {
                 console.log('WebSocket connected');
                 showNotification('Connected to backend', 'success');
-                // 立即请求scripts列表
                 postMessage({ type: 'get_scripts_list', path: '/scripts' });
             });
 
@@ -1640,6 +1919,11 @@
                     e.stopPropagation();
                     closeTab(tab.dataset.tabId);
                 });
+
+                tab.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    showTabContextMenu(e, tab.dataset.tabId);
+                });
             });
 
             document.getElementById('add-tab').addEventListener('click', addNewTab);
@@ -1694,6 +1978,7 @@
                     settingsPage.classList.remove('active');
                     showNotification('Settings closed', 'info');
                 }
+                document.getElementById('cloud-page').classList.remove('active');
                 if (isFileExplorerActive) {
                     toggleFileExplorer();
                 }
@@ -1720,6 +2005,23 @@
                 showNotification('Returned to editor', 'info');
             });
 
+            document.getElementById('cloud-btn').addEventListener('click', () => {
+                const cloudPage = document.getElementById('cloud-page');
+                if (cloudPage.classList.contains('active')) {
+                    cloudPage.classList.remove('active');
+                    showNotification('Returned to editor', 'info');
+                } else {
+                    cloudPage.classList.add('active');
+                    showNotification('Cloud scripts opened', 'info');
+                    loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+            });
+
+            document.getElementById('back-from-cloud').addEventListener('click', () => {
+                document.getElementById('cloud-page').classList.remove('active');
+                showNotification('Returned to editor', 'info');
+            });
+
             document.getElementById('topmost-toggle').addEventListener('change', (e) => {
                 postMessage({
                     type: 'set_topmost',
@@ -1734,13 +2036,127 @@
                 });
             });
 
-            // 为初始标签页设置重命名
             document.querySelectorAll('.tab-item .tab-title').forEach(title => {
                 setupTabRename(title);
             });
+
+            document.getElementById('create-btn').addEventListener('click', (e) => {
+                const createMenu = document.getElementById('create-menu');
+                createMenu.style.display = createMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.getElementById('create-folder').addEventListener('click', () => {
+                const folderName = prompt("Enter folder name:");
+                if (folderName) {
+                    postMessage({
+                        type: 'create_folder',
+                        name: folderName
+                    });
+                }
+                document.getElementById('create-menu').style.display = 'none';
+            });
+
+            document.getElementById('create-file').addEventListener('click', () => {
+                const fileName = prompt("Enter file name:");
+                if (fileName) {
+                    postMessage({
+                        type: 'create_file',
+                        name: fileName
+                    });
+                }
+                document.getElementById('create-menu').style.display = 'none';
+            });
+
+            document.getElementById('rename-tab').addEventListener('click', () => {
+                const tabId = document.getElementById('tab-context-menu').dataset.tabId;
+                const tab = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
+                const title = tab.querySelector('.tab-title');
+                const newName = prompt("Enter new tab name:", title.textContent);
+                if (newName) {
+                    postMessage({
+                        type: 'rename_tab',
+                        tabId: tabId,
+                        name: newName
+                    });
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#create-menu') && !e.target.closest('#create-btn')) {
+                    document.getElementById('create-menu').style.display = 'none';
+                }
+                if (!e.target.closest('#tab-context-menu')) {
+                    document.getElementById('tab-context-menu').style.display = 'none';
+                }
+            });
+
+            const tabBar = document.getElementById('tab-bar');
+            tabBar.addEventListener('dragstart', (e) => {
+                if (e.target.classList.contains('tab-item')) {
+                    e.dataTransfer.setData('text/plain', e.target.dataset.tabId);
+                    e.target.classList.add('dragging');
+                }
+            });
+
+            tabBar.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(tabBar, e.clientX);
+                const draggable = document.querySelector('.dragging');
+                if (afterElement == null) {
+                    tabBar.appendChild(draggable);
+                } else {
+                    tabBar.insertBefore(draggable, afterElement);
+                }
+            });
+
+            tabBar.addEventListener('dragend', (e) => {
+                const draggable = document.querySelector('.dragging');
+                draggable.classList.remove('dragging');
+            });
+
+            // Cloud scripts events
+            document.getElementById('cloud-search-btn').addEventListener('click', () => {
+                cloudSearchQuery = document.getElementById('cloud-search-input').value;
+                cloudCurrentPage = 1;
+                loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+            });
+
+            document.getElementById('cloud-search-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    cloudSearchQuery = document.getElementById('cloud-search-input').value;
+                    cloudCurrentPage = 1;
+                    loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+            });
+
+            document.getElementById('cloud-prev-page').addEventListener('click', () => {
+                if (cloudCurrentPage > 1) {
+                    cloudCurrentPage--;
+                    loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+            });
+
+            document.getElementById('cloud-next-page').addEventListener('click', () => {
+                if (cloudCurrentPage < cloudTotalPages) {
+                    cloudCurrentPage++;
+                    loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+            });
         }
 
-        // 标签页重命名功能
+        function getDragAfterElement(container, x) {
+            const draggableElements = [...container.querySelectorAll('.tab-item:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = x - box.left - box.width / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
         function setupTabRename(tabTitleElement) {
             tabTitleElement.addEventListener('dblclick', function() {
                 const input = document.createElement('input');
@@ -1748,7 +2164,6 @@
                 input.value = tabTitleElement.textContent;
                 input.className = 'tab-title-input';
 
-                // 保存原始文本
                 const originalText = tabTitleElement.textContent;
                 tabTitleElement.textContent = '';
                 tabTitleElement.appendChild(input);
@@ -1757,7 +2172,12 @@
 
                 const save = () => {
                     tabTitleElement.textContent = input.value;
-                    // 可以在这里发送消息给后端保存文件名？但这里只是前端标题
+                    const tabId = tabTitleElement.closest('.tab-item').dataset.tabId;
+                    postMessage({
+                        type: 'rename_tab',
+                        tabId: tabId,
+                        name: input.value
+                    });
                 };
 
                 const cancel = () => {
@@ -1778,8 +2198,15 @@
             });
         }
 
+        function showTabContextMenu(e, tabId) {
+            const contextMenu = document.getElementById('tab-context-menu');
+            contextMenu.dataset.tabId = tabId;
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${e.pageX}px`;
+            contextMenu.style.top = `${e.pageY}px`;
+        }
+
         function addConsoleTab() {
-            // 如果控制台标签已存在，则切换到该标签
             if (consoleTabId && document.querySelector(`.tab-item[data-tab-id="${consoleTabId}"]`)) {
                 switchTab(consoleTabId);
                 return;
@@ -1791,19 +2218,19 @@
             const tabItem = document.createElement('div');
             tabItem.className = 'tab-item';
             tabItem.dataset.tabId = tabId;
-            tabItem.dataset.consoleTab = "true"; // 标记为控制台标签页
+            tabItem.dataset.consoleTab = "true";
             tabItem.innerHTML = `
                 <i class="fa-solid fa-terminal tab-icon"></i>
                 <span class="tab-title">Console</span>
                 <i class="fa-solid fa-xmark tab-close"></i>
             `;
+            tabItem.setAttribute('draggable', 'true');
 
             tabBar.insertBefore(tabItem, document.getElementById('add-console-tab'));
 
             const editorContainer = document.createElement('div');
             editorContainer.id = `editor-${tabId}`;
             editorContainer.className = 'editor-container';
-            // 创建控制台内容
             editorContainer.innerHTML = `
                 <div class="console-container">
                     <div class="console-header">
@@ -1814,7 +2241,6 @@
             `;
             document.querySelector('.editor-pane').appendChild(editorContainer);
 
-            // 添加事件监听
             tabItem.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('tab-close')) {
                     switchTab(tabId);
@@ -1826,17 +2252,18 @@
                 closeTab(tabId);
             });
 
-            // 设置重命名功能
+            tabItem.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showTabContextMenu(e, tabId);
+            });
+
             const tabTitle = tabItem.querySelector('.tab-title');
             setupTabRename(tabTitle);
 
-            // 切换到新标签页
             switchTab(tabId);
 
-            // 记录控制台标签页ID
             consoleTabId = tabId;
 
-            // 将历史日志添加到控制台
             const consoleContent = document.getElementById(`console-content-${tabId}`);
             if (consoleContent) {
                 consoleLogs.forEach(log => {
@@ -1846,7 +2273,6 @@
                     consoleContent.appendChild(messageElement);
                 });
 
-                // 滚动到底部
                 consoleContent.scrollTop = consoleContent.scrollHeight;
             }
         }
@@ -1955,6 +2381,7 @@
                     <span class="tab-title">New Tab</span>
                     <i class="fa-solid fa-xmark tab-close"></i>
                 `;
+            tabItem.setAttribute('draggable', 'true');
 
             tabBar.insertBefore(tabItem, document.getElementById('add-console-tab'));
 
@@ -1988,7 +2415,11 @@
                 closeTab(tabId);
             });
 
-            // 设置重命名功能
+            tabItem.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showTabContextMenu(e, tabId);
+            });
+
             const tabTitle = tabItem.querySelector('.tab-title');
             setupTabRename(tabTitle);
 
@@ -2003,7 +2434,6 @@
 
             const tabItem = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
             if (tabItem) {
-                // 如果是控制台标签页，清除记录
                 if (tabId === consoleTabId) {
                     consoleTabId = null;
                 }
@@ -2196,19 +2626,16 @@
         function addConsoleMessage(text, messageType) {
             const now = new Date();
 
-            const year = now.getFullYear();    // 2025
-            const month = now.getMonth() + 1;  // 6（注意月份从0开始计数）
-            const date = now.getDate();        // 22
-            const hours = now.getHours();      // 14（24小时制）
-            const minutes = now.getMinutes();  // 30
-            const seconds = now.getSeconds();  // 45
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
 
-// 组合成自定义格式
             const formattedTime = `${hours}:${minutes}:${seconds} : `;
-            // 将消息存入日志数组
             consoleLogs.push({ text, type: messageType });
 
-            // 如果当前有控制台标签页，则把消息添加到该标签页
             if (consoleTabId) {
                 const consoleContent = document.getElementById(`console-content-${consoleTabId}`);
                 if (consoleContent) {
@@ -2217,9 +2644,107 @@
                     messageElement.textContent = formattedTime + text;
                     consoleContent.appendChild(messageElement);
 
-                    // 自动滚动到底部
                     consoleContent.scrollTop = consoleContent.scrollHeight;
                 }
+            }
+        }
+
+        async function loadCloudScripts(page, searchQuery = "") {
+            try {
+                const scriptsContainer = document.getElementById('scripts-container');
+                scriptsContainer.innerHTML = '<div style="text-align: center; padding: 20px;">Loading scripts...</div>';
+
+                let url = `https://rscripts.net/api/v2/scripts?page=${page}&orderBy=date&sort=desc`;
+                if (searchQuery) {
+                    url += `&search=${encodeURIComponent(searchQuery)}`;
+                }
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch scripts');
+                }
+
+                const data = await response.json();
+                cloudTotalPages = data.totalPages;
+                cloudCurrentPage = page;
+
+                document.getElementById('cloud-current-page').textContent = page;
+                document.getElementById('cloud-prev-page').disabled = page <= 1;
+                document.getElementById('cloud-next-page').disabled = page >= cloudTotalPages;
+
+                scriptsContainer.innerHTML = '';
+
+                if (data.scripts.length === 0) {
+                    scriptsContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No scripts found</div>';
+                    return;
+                }
+
+                data.scripts.forEach(script => {
+                    const hasUser = script.user;
+                    const profilePicture = (hasUser && script.user.image) ? script.user.image : "https://i.pravatar.cc/300";
+                    const username = hasUser ? script.user.username : script.creator;
+
+                    const scriptCard = document.createElement('div');
+                    scriptCard.className = 'script-card';
+
+                    scriptCard.innerHTML = `
+                        <div class="script-image">
+                            <i class="fas fa-file-code"></i>
+                            <span>${script.title}</span>
+                        </div>
+                        <div class="script-content">
+                            <div class="script-title">${script.title}</div>
+                            <div class="script-description">${script.description || 'No description provided'}</div>
+                            <div class="script-meta">
+                                <img src="${profilePicture}" alt="Profile picture of ${username}" class="creator-avatar">
+                                <div class="creator-name">${username}</div>
+                            </div>
+                            <div class="script-actions">
+                                <button class="copy-btn" data-script-id="${script._id}">Copy</button>
+                                <button class="execute-btn" data-script-id="${script._id}">Execute</button>
+                            </div>
+                            <textarea class="script-textarea" id="script-content-${script._id}" readonly></textarea>
+                        </div>
+                    `;
+
+                    scriptsContainer.appendChild(scriptCard);
+
+                    const textArea = scriptCard.querySelector(`#script-content-${script._id}`);
+
+                    fetch(script.rawScript)
+                        .then(response => response.text())
+                        .then(content => {
+                            textArea.value = content;
+                        })
+                        .catch(error => {
+                            console.error(`Error fetching script content for ${script.title}:`, error);
+                            textArea.value = 'Failed to load script content';
+                        });
+
+                    scriptCard.querySelector('.copy-btn').addEventListener('click', () => {
+                        textArea.select();
+                        document.execCommand('copy');
+                        showNotification('Script copied to clipboard', 'success');
+                    });
+
+                    scriptCard.querySelector('.execute-btn').addEventListener('click', () => {
+                        const code = textArea.value;
+                        if (code && code.trim() !== '') {
+                            postMessage({
+                                type: 'execute',
+                                code: code,
+                                tabId: currentTabId
+                            });
+                            showNotification('Executing script...', 'info');
+                        } else {
+                            showNotification('No script content to execute', 'error');
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading cloud scripts:', error);
+                showNotification('Failed to load cloud scripts', 'error');
+                scriptsContainer.innerHTML = '<div style="text-align: center; padding: 20px;">Error loading scripts. Please try again later.</div>';
             }
         }
 
@@ -2279,6 +2804,20 @@
                 else if (message.type === 'ivar') {
                     postMessage({type:"ivar",val:isInjected})
                 }
+                else if (message.type === 'open_cloud') {
+                    document.getElementById('settings-page').classList.remove('active');
+                    document.getElementById('cloud-page').classList.add('active');
+                    loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+                else if (message.type === 'notification') {
+                    showNotification(message.message, message.success ? 'success' : 'error');
+                }
+                else if (message.type === 'tab_renamed') {
+                    const tabItem = document.querySelector(`.tab-item[data-tab-id="${message.tabId}"] .tab-title`);
+                    if (tabItem) {
+                        tabItem.textContent = message.name;
+                    }
+                }
             } catch (error) {
                 console.error('Error handling message:', error);
             }
@@ -2293,10 +2832,9 @@
 
             files.forEach(file => {
                 const li = document.createElement('li');
-                li.className = file.type + '-item';  // 确保使用后端返回的 type 值
+                li.className = file.type + '-item';
                 li.dataset.path = file.path;
 
-                // 修复：使用后端返回的文件类型设置图标
                 let iconClass = 'fa-regular fa-file';
                 if (file.type === 'folder') {
                     iconClass = 'fa-solid fa-folder';

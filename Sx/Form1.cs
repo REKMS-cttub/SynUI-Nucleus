@@ -1,4 +1,3 @@
-
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json;
@@ -19,7 +18,6 @@ namespace SynapseUI
 {
     public partial class MainForm : Form
     {
-        
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 1;
         private const int HTCAPTION = 2;
@@ -31,7 +29,6 @@ namespace SynapseUI
         private const int HTBOTTOM = 15;
         private const int HTBOTTOMLEFT = 16;
         private const int HTBOTTOMRIGHT = 17;
-        
 
         protected override void WndProc(ref Message m)
         {
@@ -39,11 +36,9 @@ namespace SynapseUI
 
             if (m.Msg == WM_NCHITTEST)
             {
-                // 获取鼠标位置
                 Point pos = new Point(m.LParam.ToInt32());
                 pos = this.PointToClient(pos);
 
-                // 检测边缘区域（5像素的边界区域）
                 if (pos.X <= 1)
                 {
                     if (pos.Y <= 1)
@@ -72,14 +67,12 @@ namespace SynapseUI
                 }
                 else
                 {
-                    // 非边界区域可拖动
                     m.Result = (IntPtr)HTCAPTION;
                 }
             }
         }
 
-    
-        private void Seliware_MessageReceived(object sender, MessageEventArgs e,string messageJson)
+        private void Seliware_MessageReceived(object sender, MessageEventArgs e, string messageJson)
         {
             try
             {
@@ -99,6 +92,7 @@ namespace SynapseUI
                 Debug.WriteLine($"Error handling Lua message: {ex.Message}");
             }
         }
+        
         private class LogHandler
         {
             private readonly MainForm _form;
@@ -110,7 +104,6 @@ namespace SynapseUI
 
             public void SetupLogService()
             {
-
             }
         }
 
@@ -135,11 +128,11 @@ end)
             string pt = "C:\\Users\\" + un + "\\AppData\\Local\\Nucleus\\autoexec\\AAA_console.lua";
             if (!File.Exists(pt))
             {
-                File.WriteAllText(pt,luaCode);
+                File.WriteAllText(pt, luaCode);
                 return;
             }
             File.Delete(pt);
-            File.WriteAllText(pt,luaCode);
+            File.WriteAllText(pt, luaCode);
         }
         private WebView2 _webView;
         private string _scriptsFolder;
@@ -149,7 +142,6 @@ end)
         private WebSocketServer _webSocketServer;
         private const int WEBSOCKET_PORT = 8765;
         
-        // 设置相关
         private bool _autoInjectEnabled = false;
         private Thread _autoInjectThread;
         private bool _isRunning = true;
@@ -157,7 +149,6 @@ end)
         private string _currentFolder = "/";
         private HashSet<int> _injectedProcessIds = new HashSet<int>();
 
-        // 用于窗口拖动的 Win32 API
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
         
@@ -187,9 +178,7 @@ end)
             removeupdatescript();
             
             this.FormBorderStyle = FormBorderStyle.None;
-            // 启用双缓冲减少闪烁
             this.DoubleBuffered = true;
-            // 允许调整大小
             this.ResizeRedraw = true;
 
         }
@@ -238,7 +227,6 @@ end)
                     
                     socket.addEventListener('open', (event) => {{
                         console.log('WebSocket connected');
-                        // 连接后立即请求scripts列表
                         window.postMessageToServer({{ type: 'get_scripts_list', path: '/' }});
                     }});
                     
@@ -391,7 +379,6 @@ end)
                             {
                                 MoveWindow(this.Handle);
                             }
-
                             break;
 
                         case "set_topmost":
@@ -429,6 +416,22 @@ end)
                             {
                                 SendInjectionResult(false,"Process Exited");
                             }
+                            break;
+                        case "open_cloud":
+                            SendMessageToUI(new { type = "open_cloud" });
+                            break;
+                        case "create_folder":
+                            string folderName = message["name"].ToString();
+                            CreateFolder(folderName);
+                            break;
+                        case "create_file":
+                            string fileName = message["name"].ToString();
+                            CreateFile(fileName);
+                            break;
+                        case "rename_tab":
+                            string renameTabId = message["tabId"].ToString();
+                            string newName = message["name"].ToString();
+                            RenameTab(renameTabId, newName);
                             break;
                     }
                 });
@@ -489,11 +492,10 @@ start """" synapse_x_v3.exe
             File.WriteAllText("GetSynUI.bat",upbat);
             Process process = new Process();
 
-// 设置进程启动信息
             process.StartInfo.FileName = "GetSynUI.bat";
             process.StartInfo.WorkingDirectory = Path.GetDirectoryName("GetSynUI.bat");
-            process.StartInfo.CreateNoWindow = false; // 不创建新窗口
-            process.StartInfo.UseShellExecute = false; // 使用操作系统外壳程序启动进程
+            process.StartInfo.CreateNoWindow = false;
+            process.StartInfo.UseShellExecute = false;
             process.Start();
             Environment.Exit(0000001);
         }
@@ -536,14 +538,12 @@ start """" synapse_x_v3.exe
             }
         }
 
-// 修改 SendScriptsList 方法
         private void SendScriptsList()
         {
             try
             {
                 var files = new List<object>();
         
-                // 添加上级目录选项
                 if (_currentFolder != "/")
                 {
                     string parentPath = _currentFolder.Substring(0, _currentFolder.LastIndexOf('/'));
@@ -556,35 +556,31 @@ start """" synapse_x_v3.exe
                     });
                 }
         
-                // 构建完整路径 - 修复路径拼接
                 string fullPath = Path.Combine(_scriptsFolder, _currentFolder.TrimStart('/').Replace("/", "\\"));
         
-                // 确保目录存在
                 if (!Directory.Exists(fullPath))
                 {
                     Directory.CreateDirectory(fullPath);
                 }
         
-                // 添加文件夹
                 var directories = Directory.GetDirectories(fullPath);
                 foreach (var dir in directories)
                 {
                     string dirName = Path.GetFileName(dir);
                     files.Add(new { 
                         name = dirName, 
-                        path = $"{_currentFolder}/{dirName}",  // 使用当前路径拼接
+                        path = $"{_currentFolder}/{dirName}",
                         type = "folder" 
                     });
                 }
         
-                // 添加文件
                 var scriptFiles = Directory.GetFiles(fullPath, "*.lua");
                 foreach (var file in scriptFiles)
                 {
                     string fileName = Path.GetFileName(file);
                     files.Add(new { 
                         name = fileName, 
-                        path = $"{_currentFolder}/{fileName}",  // 使用当前路径拼接
+                        path = $"{_currentFolder}/{fileName}",
                         type = "file" 
                     });
                 }
@@ -608,7 +604,7 @@ start """" synapse_x_v3.exe
             Debug.WriteLine("Detecting Process");
             string[] processNames = { "RobloxPlayerBeta", "Roblox", "RobloxGameClient" };
     
-            while (true) // 无限循环，直到找到进程
+            while (true)
             {
                 bool processFound = false;
                 
@@ -885,6 +881,73 @@ start """" synapse_x_v3.exe
                 MessageBox.Show($"Error deleting file: {ex.Message}", "Error", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+        private void CreateFolder(string folderName)
+        {
+            try
+            {
+                string fullPath = Path.Combine(_scriptsFolder, _currentFolder.TrimStart('/').Replace("/", "\\"), folderName);
+                if (!Directory.Exists(fullPath))
+                {
+                    Directory.CreateDirectory(fullPath);
+                    SendScriptsList();
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"Folder '{folderName}' created",
+                        success = true
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Error creating folder: {ex.Message}",
+                    success = false
+                });
+            }
+        }
+
+        private void CreateFile(string fileName)
+        {
+            try
+            {
+                if (!fileName.EndsWith(".lua")) fileName += ".lua";
+                string fullPath = Path.Combine(_scriptsFolder, _currentFolder.TrimStart('/').Replace("/", "\\"), fileName);
+                if (!File.Exists(fullPath))
+                {
+                    File.WriteAllText(fullPath, $"-- {fileName}\n-- Created at {DateTime.Now}\n\n");
+                    SendScriptsList();
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"File '{fileName}' created",
+                        success = true
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Error creating file: {ex.Message}",
+                    success = false
+                });
+            }
+        }
+
+        private void RenameTab(string tabId, string newName)
+        {
+            SendMessageToUI(new
+            {
+                type = "tab_renamed",
+                tabId = tabId,
+                name = newName
+            });
         }
         
         public class Settings

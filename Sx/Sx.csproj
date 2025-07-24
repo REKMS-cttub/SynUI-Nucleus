@@ -7,6 +7,8 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
         <ApplicationIcon>SynapseIcon.ico</ApplicationIcon>
+        <AssemblyName>synapse_x_v3</AssemblyName>
+        <RootNamespace>synapse_x_v3</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
