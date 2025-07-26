@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synapse UI</title>
+    <title>Synapse UI - Nucleus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --accent-color-green: #2c723a;
             --accent-color-blue: #3a6ea5;
             --accent-color-red: #e81123;
+            --accent-color-purple: #7a3fa8;
             --font-main: 'Segoe UI', 'Roboto', sans-serif;
             --font-mono: 'Consolas', 'Courier New', monospace;
         }
@@ -530,7 +531,7 @@
             color: var(--accent-color-green);
         }
         .status-bar .inject-icon.active {
-            animation: pulse 1.6s infinite;
+            animation: pulse 1.7s infinite;
         }
 
         @keyframes pulse {
@@ -560,7 +561,7 @@
 
         .notification {
             position: fixed;
-            top: 20px;
+            top: 40px;
             right: 20px;
             padding: 15px 20px;
             background-color: #252526;
@@ -585,6 +586,39 @@
         }
         .notification.info {
             border-left: 4px solid var(--accent-color-blue);
+        }
+
+        .notification .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        .notification .close-btn:hover {
+            opacity: 1;
+        }
+
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .notification-progress-bar {
+            height: 100%;
+            width: 100%;
+            background: rgba(255,255,255,0.4);
+            transform-origin: left;
+            transform: scaleX(1);
+            transition: transform 3s linear;
+        }
+        .notification.show .notification-progress-bar {
+            transform: scaleX(0);
         }
 
         .app-container.file-explorer-active .editor-pane,
@@ -1310,6 +1344,9 @@
             justify-content: center;
             color: var(--text-color-secondary);
             font-size: 14px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
 
         .script-content {
@@ -1325,10 +1362,27 @@
 
         .script-description {
             font-size: 14px;
-            color: var(--text-color-secondary);
+            color: var(--text-color-primary); 
             margin-bottom: 15px;
             height: 60px;
             overflow: hidden;
+            background-color: var(--bg-color-medium); 
+            padding: 8px; 
+            border-radius: 4px; 
+        }
+
+        .script-textarea {
+            width: 100%; 
+            height: calc(30px * 3); 
+            background-color: var(--bg-color-medium); 
+            color: var(--text-color-primary); 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            padding: 8px; 
+            font-family: var(--font-mono); 
+            resize: none; 
+            margin-top: 10px; 
+            display: block;
         }
 
         .script-meta {
@@ -1364,25 +1418,43 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .script-actions button:hover {
             background-color: var(--accent-color-blue);
         }
 
-        .script-textarea {
+        .script-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 200px;
-            background-color: var(--bg-color-dark);
-            color: var(--text-color-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 10px;
-            font-family: var(--font-mono);
-            font-size: 13px;
-            resize: none;
-            margin-top: 15px;
-            display: none;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .script-loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color-blue);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .create-menu-item i {
@@ -1395,7 +1467,7 @@
 <div id="splash-screen">
     <div class="splash-logo">
         <div class="splash-title">SYNAPSE X</div>
-        <div class="splash-version">UI 1.6 | Nucleus UI</div>
+        <div class="splash-version">UI 1.7 | Nucleus UI</div>
     </div>
 
     <div class="update-container">
@@ -1432,7 +1504,7 @@
             <div class="logo">
                 <span class="logo-text">SYNAPSE</span>
                 <div class="logo-info">
-                    <span>UI 1.6</span>
+                    <span>UI 1.7</span>
                     <span>Nucleus UI</span>
                 </div>
             </div>
@@ -1442,7 +1514,7 @@
             <div class="center-icons">
                 <i class="fa-solid fa-code icon" id="editor-btn" title="Editor"></i>
                 <i class="fa-solid fa-folder icon" id="toggle-file-explorer" title="File Explorer"></i>
-                <i class="fa-solid fa-cloud icon" id="cloud-btn" title="Cloud Scripts (IN-FIXING)"></i>
+                <i class="fa-solid fa-cloud icon" id="cloud-btn" title="Cloud Scripts"></i>
                 <i class="fa-solid fa-gear icon" id="settings-btn" title="Settings"></i>
             </div>
         </div>
@@ -1628,8 +1700,12 @@
 </div>
 
 <div class="notification" id="notification">
-    <i class="fa-solid fa-check-circle"></i>
+    <i class="fa-solid fa-times close-btn"></i>
+    <i id="notification-icon"></i>
     <span id="notification-message">Operation completed successfully</span>
+    <div class="notification-progress">
+        <div class="notification-progress-bar"></div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
@@ -1686,7 +1762,7 @@
         }
 
         async function verifyUpdate() {
-            const currentVersion = "1.6";
+            const currentVersion = "1.7";
             try {
                 updateText.textContent = "Verifying version...";
                 const response = await fetch('https://raw.githubusercontent.com/REKMS-cttub/SynUI-Nucleus/refs/heads/master/VERSION');
@@ -1824,10 +1900,10 @@
         let consoleLogs = [];
         let consoleTabId = null;
 
-        // Cloud scripts state
         let cloudCurrentPage = 1;
         let cloudTotalPages = 1;
         let cloudSearchQuery = "";
+        let notificationTimer = null;
 
         function initWebSocket() {
             const WS_PORT = 8765;
@@ -1868,6 +1944,33 @@
             } else {
                 console.error('WebSocket is not connected');
                 showNotification('Not connected to backend', 'error');
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                return successful;
+            } catch (err) {
+                document.body.removeChild(textArea);
+                return false;
             }
         }
 
@@ -2114,7 +2217,6 @@
                 draggable.classList.remove('dragging');
             });
 
-            // Cloud scripts events
             document.getElementById('cloud-search-btn').addEventListener('click', () => {
                 cloudSearchQuery = document.getElementById('cloud-search-input').value;
                 cloudCurrentPage = 1;
@@ -2140,6 +2242,14 @@
                 if (cloudCurrentPage < cloudTotalPages) {
                     cloudCurrentPage++;
                     loadCloudScripts(cloudCurrentPage, cloudSearchQuery);
+                }
+            });
+
+            document.querySelector('.notification .close-btn').addEventListener('click', () => {
+                const notification = document.getElementById('notification');
+                notification.classList.remove('show');
+                if (notificationTimer) {
+                    clearTimeout(notificationTimer);
                 }
             });
         }
@@ -2609,7 +2719,15 @@
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             const messageEl = document.getElementById('notification-message');
-            const icon = notification.querySelector('i');
+            const icon = notification.querySelector('#notification-icon');
+            const progressBar = document.querySelector('.notification-progress-bar');
+
+            progressBar.style.transition = 'none';
+            progressBar.style.transform = 'scaleX(1)';
+            void progressBar.offsetWidth;
+            progressBar.style.transition = 'transform 3s linear';
+            progressBar.style.transform = 'scaleX(0)';
+
             messageEl.textContent = message;
             notification.className = 'notification ' + type;
             if (type === 'success') {
@@ -2619,8 +2737,19 @@
             } else {
                 icon.className = 'fa-solid fa-info-circle';
             }
+
+            notification.classList.remove('show');
+            void notification.offsetWidth;
+
             notification.classList.add('show');
-            setTimeout(() => notification.classList.remove('show'), 3000);
+
+            if (notificationTimer) {
+                clearTimeout(notificationTimer);
+            }
+
+            notificationTimer = setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
 
         function addConsoleMessage(text, messageType) {
@@ -2656,7 +2785,7 @@
 
                 let url = `https://rscripts.net/api/v2/scripts?page=${page}&orderBy=date&sort=desc`;
                 if (searchQuery) {
-                    url += `&search=${encodeURIComponent(searchQuery)}`;
+                    url += `&q=${encodeURIComponent(searchQuery)}`;
                 }
 
                 const response = await fetch(url);
@@ -2665,7 +2794,7 @@
                 }
 
                 const data = await response.json();
-                cloudTotalPages = data.totalPages;
+                cloudTotalPages = data.info.maxPages;
                 cloudCurrentPage = page;
 
                 document.getElementById('cloud-current-page').textContent = page;
@@ -2688,9 +2817,11 @@
                     scriptCard.className = 'script-card';
 
                     scriptCard.innerHTML = `
-                        <div class="script-image">
-                            <i class="fas fa-file-code"></i>
-                            <span>${script.title}</span>
+                        <div class="script-image" style="background-image: url('${script.image}');">
+                            <div class="script-loading" id="loading-${script._id}">
+                                <div class="spinner"></div>
+                                <span>Loading script...</span>
+                            </div>
                         </div>
                         <div class="script-content">
                             <div class="script-title">${script.title}</div>
@@ -2700,8 +2831,12 @@
                                 <div class="creator-name">${username}</div>
                             </div>
                             <div class="script-actions">
-                                <button class="copy-btn" data-script-id="${script._id}">Copy</button>
-                                <button class="execute-btn" data-script-id="${script._id}">Execute</button>
+                                <button class="copy-btn" data-script-id="${script._id}" disabled>
+                                    <i class="fa-solid fa-copy"></i> Copy
+                                </button>
+                                <button class="execute-btn" data-script-id="${script._id}" disabled>
+                                    <i class="fa-solid fa-bolt"></i> Execute
+                                </button>
                             </div>
                             <textarea class="script-textarea" id="script-content-${script._id}" readonly></textarea>
                         </div>
@@ -2710,35 +2845,82 @@
                     scriptsContainer.appendChild(scriptCard);
 
                     const textArea = scriptCard.querySelector(`#script-content-${script._id}`);
+                    const loadingElement = scriptCard.querySelector(`#loading-${script._id}`);
+                    const copyBtn = scriptCard.querySelector('.copy-btn');
+                    const executeBtn = scriptCard.querySelector('.execute-btn');
 
                     fetch(script.rawScript)
-                        .then(response => response.text())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load script content');
+                            }
+                            return response.text();
+                        })
                         .then(content => {
                             textArea.value = content;
+                            loadingElement.style.display = 'none';
+                            copyBtn.disabled = false;
+                            executeBtn.disabled = false;
                         })
                         .catch(error => {
                             console.error(`Error fetching script content for ${script.title}:`, error);
-                            textArea.value = 'Failed to load script content';
+                            textArea.value = 'Failed to load script content: ' + error.message;
+                            loadingElement.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Failed to load';
+                            copyBtn.disabled = true;
+                            executeBtn.disabled = true;
                         });
 
-                    scriptCard.querySelector('.copy-btn').addEventListener('click', () => {
-                        textArea.select();
-                        document.execCommand('copy');
-                        showNotification('Script copied to clipboard', 'success');
+                    copyBtn.addEventListener('click', async () => {
+                        const content = textArea.value;
+                        if (!content) {
+                            showNotification('Script content is still loading or empty', 'error');
+                            return;
+                        }
+
+                        try {
+                            await navigator.clipboard.writeText(content);
+                            showNotification('Script copied to clipboard!', 'success');
+
+                            const originalText = copyBtn.innerHTML;
+                            copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                            setTimeout(() => {
+                                copyBtn.innerHTML = originalText;
+                            }, 2000);
+                        } catch (err) {
+                            if (fallbackCopyText(content)) {
+                                showNotification('Script copied to clipboard!', 'success');
+
+                                const originalText = copyBtn.innerHTML;
+                                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                                setTimeout(() => {
+                                    copyBtn.innerHTML = originalText;
+                                }, 2000);
+                            } else {
+                                showNotification('Failed to copy script', 'error');
+                            }
+                        }
                     });
 
-                    scriptCard.querySelector('.execute-btn').addEventListener('click', () => {
+                    executeBtn.addEventListener('click', () => {
                         const code = textArea.value;
-                        if (code && code.trim() !== '') {
-                            postMessage({
-                                type: 'execute',
-                                code: code,
-                                tabId: currentTabId
-                            });
-                            showNotification('Executing script...', 'info');
-                        } else {
+                        if (!code || code.trim() === '') {
                             showNotification('No script content to execute', 'error');
+                            return;
                         }
+
+                        postMessage({
+                            type: 'execute',
+                            code: code,
+                            tabId: currentTabId
+                        });
+                        showNotification('Executing script...', 'info');
+
+                        const executeBtn = scriptCard.querySelector('.execute-btn');
+                        const originalText = executeBtn.innerHTML;
+                        executeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Executing';
+                        setTimeout(() => {
+                            executeBtn.innerHTML = originalText;
+                        }, 2000);
                     });
                 });
             } catch (error) {

@@ -433,12 +433,89 @@ end)
                             string newName = message["name"].ToString();
                             RenameTab(renameTabId, newName);
                             break;
+                        case "rename_file":
+                            string oldPath = message["oldPath"].ToString();
+                            string newNameFile = message["newName"].ToString();
+                            RenameFile(oldPath, newNameFile);
+                            break;
+                        case "copy_file":
+                            string sourcePath = message["sourcePath"].ToString();
+                            string targetPath = message["targetPath"].ToString();
+                            CopyFile(sourcePath, targetPath);
+                            break;
                     }
                 });
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error handling message: {ex.Message}");
+            }
+        }
+
+        private void CopyFile(string sourcePath, string targetPath)
+        {
+            try
+            {
+                string fullSourcePath = Path.Combine(_scriptsFolder, sourcePath.TrimStart('/').Replace("/", "\\"));
+                string fullTargetPath = Path.Combine(_scriptsFolder, targetPath.TrimStart('/').Replace("/", "\\"));
+                
+                if (File.Exists(fullSourcePath))
+                {
+                    File.Copy(fullSourcePath, fullTargetPath, true);
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"Copied file to {Path.GetFileName(targetPath)}",
+                        success = true
+                    });
+                }
+                else if (Directory.Exists(fullSourcePath))
+                {
+                    CopyDirectory(fullSourcePath, fullTargetPath);
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"Copied folder to {Path.GetFileName(targetPath)}",
+                        success = true
+                    });
+                }
+                else
+                {
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = "Source not found",
+                        success = false
+                    });
+                }
+                
+                SendScriptsList();
+            }
+            catch (Exception ex)
+            {
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Copy failed: {ex.Message}",
+                    success = false
+                });
+            }
+        }
+
+        private void CopyDirectory(string sourceDir, string targetDir)
+        {
+            Directory.CreateDirectory(targetDir);
+
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                string destFile = Path.Combine(targetDir, Path.GetFileName(file));
+                File.Copy(file, destFile, true);
+            }
+
+            foreach (var directory in Directory.GetDirectories(sourceDir))
+            {
+                string destDir = Path.Combine(targetDir, Path.GetFileName(directory));
+                CopyDirectory(directory, destDir);
             }
         }
 
@@ -872,14 +949,33 @@ start """" synapse_x_v3.exe
                 {
                     File.Delete(fullPath);
                     SendScriptsList();
-                    MessageBox.Show($"Deleted file: {Path.GetFileName(fullPath)}", "Success", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"Deleted file: {Path.GetFileName(fullPath)}",
+                        success = true
+                    });
+                }
+                else if (Directory.Exists(fullPath))
+                {
+                    Directory.Delete(fullPath, true);
+                    SendScriptsList();
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = $"Deleted folder: {Path.GetFileName(fullPath)}",
+                        success = true
+                    });
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error deleting file: {ex.Message}", "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Error deleting: {ex.Message}",
+                    success = false
+                });
             }
         }
         
@@ -948,6 +1044,51 @@ start """" synapse_x_v3.exe
                 tabId = tabId,
                 name = newName
             });
+        }
+        
+        private void RenameFile(string oldPath, string newName)
+        {
+            try
+            {
+                string fullOldPath = Path.Combine(_scriptsFolder, oldPath.TrimStart('/').Replace("/", "\\"));
+                string newPath = Path.Combine(Path.GetDirectoryName(fullOldPath), newName);
+                
+                if (File.Exists(fullOldPath))
+                {
+                    File.Move(fullOldPath, newPath);
+                }
+                else if (Directory.Exists(fullOldPath))
+                {
+                    Directory.Move(fullOldPath, newPath);
+                }
+                else
+                {
+                    SendMessageToUI(new
+                    {
+                        type = "notification",
+                        message = "File or folder not found",
+                        success = false
+                    });
+                    return;
+                }
+                
+                SendScriptsList();
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Renamed to {newName}",
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                SendMessageToUI(new
+                {
+                    type = "notification",
+                    message = $"Error renaming: {ex.Message}",
+                    success = false
+                });
+            }
         }
         
         public class Settings

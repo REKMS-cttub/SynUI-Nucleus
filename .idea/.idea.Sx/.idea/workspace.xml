@@ -10,7 +10,6 @@
     <list default="true" id="e72be2ac-d893-4922-8637-940c8915663c" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sx/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sx/Form1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Form1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sx/Sx.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/Sx.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sx/core/mainsite.html" beforeDir="false" afterPath="$PROJECT_DIR$/Sx/core/mainsite.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +88,10 @@
       <workItem from="1753080672491" duration="382000" />
       <workItem from="1753154858497" duration="1222000" />
       <workItem from="1753162742747" duration="68000" />
+      <workItem from="1753316565804" duration="4365000" />
+      <workItem from="1753329733366" duration="782000" />
+      <workItem from="1753354447386" duration="613000" />
+      <workItem from="1753512249141" duration="8255000" />
     </task>
     <servers />
   </component>
